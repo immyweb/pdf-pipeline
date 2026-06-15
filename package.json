@@ -1,0 +1,25 @@
+{
+  "name": "pdf-pipeline",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "tsx generate-invoices.ts",
+    "test": "vitest run",
+    "typecheck": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^7.0.0",
+    "pdfkit": "^0.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pdfkit": "^0.13.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  }
+}
