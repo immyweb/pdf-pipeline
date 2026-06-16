@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\"; OUTPUT=$(npm test 2>&1); if [ $? -ne 0 ]; then jq -n --arg out \"$OUTPUT\" '{decision:\"block\", reason: (\"Tests are failing. Fix them before stopping.\n\n\" + $out)}'; fi",
+            "timeout": 120,
+            "statusMessage": "Running test suite before stopping..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_input.notebook_path // \"\"' | { read -r f; if [ \"$(basename \"$f\")\" = \"invoice.csv\" ]; then jq -n '{hookSpecificOutput: {hookEventName: \"PreToolUse\", permissionDecision: \"deny\", permissionDecisionReason: \"invoice.csv is a protected source-of-truth file and must not be modified by the agent.\"}}'; fi; }"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "COMMAND=$(jq -r '.tool_input.command // \"\"'); if echo \"$COMMAND\" | grep -qE 'invoice\\.csv' && echo \"$COMMAND\" | grep -qE '(>|>>|\\bsed[[:space:]]+-i|\\brm[[:space:]]|\\bmv[[:space:]]|\\bcp[[:space:]]|\\btruncate\\b|\\btee[[:space:]]|\\bdd[[:space:]])'; then jq -n '{hookSpecificOutput: {hookEventName: \"PreToolUse\", permissionDecision: \"deny\", permissionDecisionReason: \"invoice.csv is a protected source-of-truth file and must not be modified by the agent.\"}}'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
