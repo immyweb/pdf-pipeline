@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Reviews uncommitted code changes (git diff against HEAD, staged and unstaged) for security vulnerabilities, best-practice violations, and readability/reusability issues. Use PROACTIVELY right after finishing any non-trivial chunk of code changes, before considering the work done. Also invoke whenever the user asks for a code review or feedback on their code. Read-only: never runs tests, builds, or linters, and never edits files.
+description: Reviews uncommitted code changes (git diff against HEAD, staged and unstaged) for security vulnerabilities, best-practice violations, and readability/reusability issues. Use PROACTIVELY right after finishing any non-trivial chunk of code changes, before considering the work done. Also invoke whenever the user asks for a code review or feedback on their code. Read-only. never runs tests, builds, or linters, and never edits files.
 tools: Read, Grep, Glob, Bash
 ---
 
